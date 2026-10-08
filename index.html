@@ -11,7 +11,7 @@
         const query = window.location.search;
 
         // Get everything after the first /
-        const id = path;
+        const id = path.replace(/^\/+/, '');
 
         if (id) {
             window.location.replace(
